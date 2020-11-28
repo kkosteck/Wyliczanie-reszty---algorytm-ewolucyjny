@@ -61,6 +61,7 @@ int main() {
 		}
 		population = newGeneration;
 	}
+	cout << "C: " << C << " Generations: " << generationLimit << " Population size: " << populationSize << endl;
 	Individual indTemp = *min_element(theBestOfGenerations.begin(), theBestOfGenerations.end());
 	cout << "Quantity: " << indTemp.getQuantity() << " Difference: " << indTemp.getDifference() << endl;
 	deque<int> temp = indTemp.getChromosome();
