@@ -1,16 +1,24 @@
 #pragma once
-#include <vector>
-#include <random>
+#include <deque>
+#include<numeric>
+#include <ctime>
 class Individual
 {
 private:
-	std::vector<int> chromosome;
-	int fitness;
-	int calculateFitness();
-	int randomNumber(int a, int b);
+	std::deque<int> chromosome;
+	int difference, quantity;
+	void calculateFitness(int C);
 public:
-	Individual(std::vector<int> chromosome);
-	int getFitness();
-	std::vector<int> getChromosome();
-	void mutate(int genes[]);
+	Individual(int C, int genes[]);
+	Individual();
+	int getDifference();
+	int getQuantity();
+	std::deque<int> getChromosome();
+	void mutate(int genes[], int C);
+	
+	static int RandomNumber(int a, int b) {
+		return a + (rand() % (b - a + 1));
+	}
+
+	bool operator<(Individual const& ind) const;
 };
