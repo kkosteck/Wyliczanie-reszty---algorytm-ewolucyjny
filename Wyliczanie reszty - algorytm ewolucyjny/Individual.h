@@ -13,6 +13,7 @@ private:
 	void calculateFitness(int C);
 public:
 	Individual(int C, std::vector<int>);
+	Individual();
 	int getDifference();
 	int getQuantity();
 	std::deque<int> getChromosome();

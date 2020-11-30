@@ -8,6 +8,11 @@ Individual::Individual(int C, std::vector<int> genes) {
 	calculateFitness(C);
 };
 
+Individual::Individual() {
+	difference = 0;
+	quantity = 0;
+}
+
 void Individual::calculateFitness(int C) {
 
 	difference = abs(C - accumulate(chromosome.begin(), chromosome.end(), 0));
