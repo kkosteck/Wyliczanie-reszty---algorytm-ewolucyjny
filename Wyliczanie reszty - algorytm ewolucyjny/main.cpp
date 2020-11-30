@@ -1,8 +1,20 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <ctime>
 #include <algorithm>
+#include <string>
 #include "Individual.h"
+
+void writeLog(std::ofstream *file, Individual ind, int generation) {
+	*file << generation << " " << ind.getQuantity() << " " << ind.getDifference() << " ";
+	std::deque<int> temp = ind.getChromosome();
+	for (auto& y : temp) {
+		*file << y << " ";
+	}
+	*file << std::endl;
+}
+
 
 int main(int argc, char* argv[]) { //change, generationLimit, populationSize, mutationChance, addGeneChance, removeGeneChance
 	srand((unsigned)time(0));
@@ -11,24 +23,27 @@ int main(int argc, char* argv[]) { //change, generationLimit, populationSize, mu
 	int C = atoi(argv[1]), generationLimit = atoi(argv[2]), populationSize = atoi(argv[3]);
 	int mutationChance = atoi(argv[4]), addGeneChance = atoi(argv[5]), removeGeneChance = atoi(argv[6]);
 
+	std::string filename_everyGen = "every_generetion_" + std::to_string(C) + '_' + std::to_string(generationLimit) + '_' + std::to_string(populationSize) + ".txt";
+	std::ofstream everyGen(filename_everyGen);
+	std::string filename_theBestGen = "the_best_generations_" + std::to_string(C) + '_' + std::to_string(generationLimit) + '_' + std::to_string(populationSize) + ".txt";
+	std::ofstream theBestGen(filename_theBestGen);
+
 	std::vector<Individual> population;
 	for (int i = 0; i < populationSize; ++i) {
 		population.push_back(Individual(C, genes));
 	}
 
 	std::vector<Individual> theBestOfGenerations;
-	std::cout << "GENERATION" << "QUANTITY" << "DIFFERENCE" << "DENOMINATIONS" << std::endl;
+	everyGen << "GENERATION " << "QUANTITY " << "DIFFERENCE " << "DENOMINATIONS" << std::endl;
+	theBestGen << "GENERATION " << "QUANTITY " << "DIFFERENCE " << "DENOMINATIONS" << std::endl;
+
 	for (int generation = 1; generation <= generationLimit; ++generation) {
 		std::vector<Individual> newGeneration;
-
 		Individual indTemp = *min_element(population.begin(), population.end());
-		std::cout << generation << " " << indTemp.getQuantity() << " " << indTemp.getDifference() << " ";
-		std::deque<int> temp = indTemp.getChromosome();
-		for (auto& y : temp) {
-			std::cout << y << " ";
-		}
-		std::cout << std::endl;
+		writeLog(&everyGen, indTemp, generation);
 		theBestOfGenerations.push_back(indTemp);
+		indTemp = *min_element(theBestOfGenerations.begin(), theBestOfGenerations.end());
+		writeLog(&theBestGen, indTemp, generation);
 
 		// create new generation
 		for (int i = 0; i <= populationSize; ++i) {
