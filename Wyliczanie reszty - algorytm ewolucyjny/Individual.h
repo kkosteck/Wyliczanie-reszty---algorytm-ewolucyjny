@@ -17,7 +17,7 @@ public:
 	int getDifference();
 	int getQuantity();
 	std::deque<int> getChromosome();
-	void mutate(std::vector<int>, int C, int mutationChance, int addGeneChance, int removeGeneChance);
+	void mutate(std::vector<int>, int C, int mutationChance, int geneChance);
 	
 	static int RandomNumber(int a, int b) {
 		return a + (rand() % (b - a + 1));

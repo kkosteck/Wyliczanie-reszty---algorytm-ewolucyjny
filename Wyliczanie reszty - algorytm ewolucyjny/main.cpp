@@ -17,17 +17,22 @@ void writeLog(std::ofstream *file, Individual ind, int generation) {
 }
 
 
-int main(int argc, char* argv[]) { //change, generationLimit, populationSize, mutationChance, addGeneChance, removeGeneChance
+int main(int argc, char* argv[]) { //change, generationLimit, populationSize, mutationChance, GeneChance
 	srand((unsigned)time(0));
 
-	if (argc < 8) {
+	int geneChance;
+	if (argc < 5) {
 		std::cout << "Not enough arguments!" << std::endl;
 		return 1;
 	}
+	else if (argc == 5) {
+		geneChance = 10;
+	}
+	else
+		geneChance = atoi(argv[5]);
 
 	std::vector<int> genes = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
-	int C = atoi(argv[1]), generationLimit = atoi(argv[2]), populationSize = atoi(argv[3]);
-	int mutationChance = atoi(argv[4]), addGeneChance = atoi(argv[5]), removeGeneChance = atoi(argv[6]);
+	int C = atoi(argv[1]), generationLimit = atoi(argv[2]), populationSize = atoi(argv[3]), mutationChance = atoi(argv[4]);
 
 	std::string filename_everyGen = "every_generetion_" + std::to_string(C) + '_' + std::to_string(generationLimit) + '_' + std::to_string(populationSize) + ".txt";
 	std::ofstream everyGen(filename_everyGen);
@@ -67,12 +72,12 @@ int main(int argc, char* argv[]) { //change, generationLimit, populationSize, mu
 			}
 			if (population[ind1] < population[ind2]) {
 				Individual temp = population[ind1];
-				temp.mutate(genes, C, mutationChance, addGeneChance, removeGeneChance);
+				temp.mutate(genes, C, mutationChance, geneChance);
 				newGeneration.push_back(temp);
 			} 
 			else {
 				Individual temp = population[ind1];
-				temp.mutate(genes, C, mutationChance, addGeneChance, removeGeneChance);
+				temp.mutate(genes, C, mutationChance, geneChance);
 				newGeneration.push_back(temp);
 			}
 		}
