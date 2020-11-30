@@ -1,7 +1,10 @@
 #pragma once
 #include <deque>
+#include <vector>
 #include<numeric>
-#include <ctime>
+#include <cstdlib>
+#include <iostream>
+
 class Individual
 {
 private:
@@ -9,12 +12,11 @@ private:
 	int difference, quantity;
 	void calculateFitness(int C);
 public:
-	Individual(int C, int genes[]);
-	Individual();
+	Individual(int C, std::vector<int>);
 	int getDifference();
 	int getQuantity();
 	std::deque<int> getChromosome();
-	void mutate(int genes[], int C);
+	void mutate(std::vector<int>, int C, int mutationChance, int addGeneChance, int removeGeneChance);
 	
 	static int RandomNumber(int a, int b) {
 		return a + (rand() % (b - a + 1));

@@ -1,44 +1,33 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
-#include<algorithm>
+#include <algorithm>
 #include "Individual.h"
 
-using namespace std;
-
-int main() {
+int main(int argc, char* argv[]) { //change, generationLimit, populationSize, mutationChance, addGeneChance, removeGeneChance
 	srand((unsigned)time(0));
 
-	int genes[] = { 1, 2, 5, 10, 20, 50, 100, 200 };
-	int C, populationSize;
+	std::vector<int> genes = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
+	int C = atoi(argv[1]), generationLimit = atoi(argv[2]), populationSize = atoi(argv[3]);
+	int mutationChance = atoi(argv[4]), addGeneChance = atoi(argv[5]), removeGeneChance = atoi(argv[6]);
 
-	cout << "Podaj wartosc reszty (C):";
-	cin >> C;
-	cout << "Podaj liczebnosc populacji:";
-	cin >> populationSize;
-
-	vector<Individual> population;
+	std::vector<Individual> population;
 	for (int i = 0; i < populationSize; ++i) {
 		population.push_back(Individual(C, genes));
 	}
 
-	int generationLimit;
-	cout << "Ile pokolen chcesz stworzyc:";
-	cin >> generationLimit;
-
-	vector<Individual> theBestOfGenerations;
+	std::vector<Individual> theBestOfGenerations;
+	std::cout << "GENERATION" << "QUANTITY" << "DIFFERENCE" << "DENOMINATIONS" << std::endl;
 	for (int generation = 1; generation <= generationLimit; ++generation) {
-		vector<Individual> newGeneration;
+		std::vector<Individual> newGeneration;
 
 		Individual indTemp = *min_element(population.begin(), population.end());
-		cout << "Generation: " << generation << ". ";
-		cout << "Quantity: " << indTemp.getQuantity() << " Difference: " << indTemp.getDifference() << endl;
-		deque<int> temp = indTemp.getChromosome();
-		cout << "Denominations: ";
+		std::cout << generation << " " << indTemp.getQuantity() << " " << indTemp.getDifference() << " ";
+		std::deque<int> temp = indTemp.getChromosome();
 		for (auto& y : temp) {
-			cout << y << " ";
+			std::cout << y << " ";
 		}
-		cout << endl;
+		std::cout << std::endl;
 		theBestOfGenerations.push_back(indTemp);
 
 		// create new generation
@@ -50,24 +39,23 @@ int main() {
 			}
 			if (population[ind1] < population[ind2]) {
 				Individual temp = population[ind1];
-				temp.mutate(genes, C);
+				temp.mutate(genes, C, mutationChance, addGeneChance, removeGeneChance);
 				newGeneration.push_back(temp);
 			} 
 			else {
 				Individual temp = population[ind1];
-				temp.mutate(genes, C);
+				temp.mutate(genes, C, mutationChance, addGeneChance, removeGeneChance);
 				newGeneration.push_back(temp);
 			}
 		}
 		population = newGeneration;
 	}
-	cout << "C: " << C << " Generations: " << generationLimit << " Population size: " << populationSize << endl;
 	Individual indTemp = *min_element(theBestOfGenerations.begin(), theBestOfGenerations.end());
-	cout << "Quantity: " << indTemp.getQuantity() << " Difference: " << indTemp.getDifference() << endl;
-	deque<int> temp = indTemp.getChromosome();
-	cout << "Denominations: ";
+	std::cout << "Quantity: " << indTemp.getQuantity() << " Difference: " << indTemp.getDifference();
+	std::deque<int> temp = indTemp.getChromosome();
+	std::cout << " Denominations: ";
 	for (auto& y : temp) {
-		cout << y << " ";
+		std::cout << y << " ";
 	}
-	cout << endl;
+	std::cout << std::endl;
 }
